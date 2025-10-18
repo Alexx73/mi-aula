@@ -1,18 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import './App.css';
+
+import Inicio from './pages/Inicio';
+import Alphabet from './pages/Alphabet';
+import Personal from './pages/PersonalInformation';
+
+
+import NavBar from './components/NavBar';
+import NavBar2 from './components/NavBar2';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className="text-6xl text-center font-bold">
-        hello world! Maricas
-      </div>
-    </>
-  )
+    <HashRouter>
+      <NavBar/>
+      <div className="pt-20 px-4 dark:bg-gray-900 min-h-screen dark:text-white">
+        <Routes>
+          <Route path="/" element={<Inicio />} />
+          <Route path="/alphabet" element={<Alphabet />} />
+          <Route path="/questions" element={<Personal />} />
+          {/* <Route path="/about" element={<About />} /> */}
+        </Routes>
+       </div>
+    </HashRouter>
+  );
 }
 
-export default App
+export default App;
