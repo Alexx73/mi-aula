@@ -11,7 +11,7 @@ const questions = [
     question: 'How old are you?', 
     answer: 'I am 12 years old.', 
     translationQuestion: '¿Cuántos años tienes?', 
-    translationAnswer: 'Tengo 12 años.'
+    translationAnswer: 'Tengo 12 años de edad.'
   },
   { 
     number: '3', 

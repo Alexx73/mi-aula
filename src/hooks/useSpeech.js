@@ -39,7 +39,7 @@ export default function useSpeech () {
     const utterance = new SpeechSynthesisUtterance(textToSpeak);
     utterance.lang = 'en-US';
     utterance.volume = 1;
-    utterance.rate = 0.6;
+    utterance.rate = 0.5;
 
     // Find a female voice if available
     const femaleVoice = voices.find(voice =>
