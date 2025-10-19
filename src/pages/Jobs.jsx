@@ -27,7 +27,7 @@ export default function Jobs() {
     cook: "cocinero",
     hairdresser: "peluquero",
     singer: "cantante",
-    actor: "actor",
+    doctor: "doctor",
   };
 
 
@@ -62,13 +62,13 @@ export default function Jobs() {
   };
 
 
- return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-5 px-4 flex flex-col items-center">
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col items-center">
       {/* <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
         Jobs
       </h1> */}
 
-      {/* GRID: 3 columnas en móvil, 4 en pantallas grandes */}
+      {/* GRID RESPONSIVA */}
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4">
         {jobs.map((job, index) => {
           const color = colors[index % colors.length];
@@ -82,40 +82,40 @@ export default function Jobs() {
               }`}
               onClick={() => handleClick(job.name)}
             >
+              {/* Traducción arriba de la imagen */}
+              {isActive && (
+                <div
+                  className="absolute top-0 left-0 right-0 bg-black/70 text-white text-sm font-bold py-1 text-center rounded-t-lg animate-fadeInOut"
+                  style={{ animationDuration: `${duracion}ms` }}
+                >
+                  {traducciones[job.name]}
+                </div>
+              )}
+
               {/* Imagen */}
               <img
                 src={job.img}
                 alt={job.name}
-                className="w-[180px] h-[160px] object-contain mx-auto transition-transform"
+                className="w-[140px] h-[120px] object-contain mx-auto transition-transform"
               />
 
               {/* Nombre */}
               <p className="mt-2 text-white font-semibold capitalize text-sm sm:text-base">
                 {job.name}
               </p>
-
-              {/* Traducción temporal */}
-              {isActive && (
-                <div
-                  className="absolute bottom-0 left-0 right-0 bg-black/70 text-white text-lg font-bold py-1 text-center rounded-b-lg animate-fadeInOut"
-                  style={{ animationDuration: `${duracion}ms` }}
-                >
-                  {traducciones[job.name]}
-                </div>
-              )}
             </div>
           );
         })}
       </div>
 
-      {/* Animaciones */}
+      {/* Animaciones CSS */}
       <style>
         {`
           @keyframes fadeInOut {
-            0% { opacity: 0; transform: translateY(10px); }
+            0% { opacity: 0; transform: translateY(-10px); }
             10% { opacity: 1; transform: translateY(0); }
             80% { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 0; transform: translateY(-10px); }
           }
           .animate-fadeInOut {
             animation: fadeInOut ease-in-out forwards;
