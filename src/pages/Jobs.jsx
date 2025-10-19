@@ -1,16 +1,13 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import useSpeech from "../hooks/useSpeech.js";
-
-
 
 export default function Jobs() {
   const { playSound } = useSpeech();
-    const [activeJob, setActiveJob] = useState(null);
+  const [activeJob, setActiveJob] = useState(null);
 
- // Duración de animación y texto (ms)
+  // Duración total (texto + animación)
   const duracion = 1500;
 
-  // Traducciones simples
   const traducciones = {
     farmer: "granjero",
     secretary: "secretaria",
@@ -30,21 +27,14 @@ export default function Jobs() {
     doctor: "doctor",
   };
 
-
-  // Cargar todas las imágenes de forma automática
+  // Cargar imágenes automáticamente
   const images = import.meta.glob("../assets/jobs/*.png", { eager: true });
-
-  // Convertirlas a un array con nombre limpio y src
   const jobs = Object.keys(images).map((path) => {
-    // Extraer solo el nombre del archivo (sin carpeta ni extensión)
     const fileName = path.split("/").pop().replace(".png", "");
-    // Quitar número y guion inicial (ej: "01 - farmer" -> "farmer")
     const name = fileName.replace(/^\d+\s*-\s*/, "").trim().toLowerCase();
-
     return { name, img: images[path].default };
   });
 
-  // Colores cíclicos como en Alphabet.jsx
   const colors = [
     "bg-red-500",
     "bg-blue-600",
@@ -54,21 +44,14 @@ export default function Jobs() {
     "bg-purple-600",
   ];
 
-  // Maneja clics y animación
   const handleClick = (jobName) => {
     playSound(jobName);
     setActiveJob(jobName);
     setTimeout(() => setActiveJob(null), duracion);
   };
 
-
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 py-10 px-4 flex flex-col items-center">
-      {/* <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-8">
-        Jobs
-      </h1> */}
-
-      {/* GRID RESPONSIVA */}
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-800 py-5 px-4 flex flex-col items-center">
       <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-4 gap-4">
         {jobs.map((job, index) => {
           const color = colors[index % colors.length];
@@ -78,9 +61,10 @@ export default function Jobs() {
             <div
               key={job.name}
               className={`relative flex flex-col items-center justify-center rounded-xl p-2 cursor-pointer transition-transform duration-300 ${color} ${
-                isActive ? "scale-110" : "hover:scale-105"
+                isActive ? "animate-pop" : "hover:scale-105"
               }`}
               onClick={() => handleClick(job.name)}
+              style={{ animationDuration: `${duracion}ms` }}
             >
               {/* Traducción arriba de la imagen */}
               {isActive && (
@@ -96,7 +80,7 @@ export default function Jobs() {
               <img
                 src={job.img}
                 alt={job.name}
-                className="w-[140px] h-[120px] object-contain mx-auto transition-transform"
+                className="w-[140px] h-[120px] object-contain mx-auto"
               />
 
               {/* Nombre */}
@@ -111,6 +95,7 @@ export default function Jobs() {
       {/* Animaciones CSS */}
       <style>
         {`
+          /* Texto traducido (fade arriba) */
           @keyframes fadeInOut {
             0% { opacity: 0; transform: translateY(-10px); }
             10% { opacity: 1; transform: translateY(0); }
@@ -119,6 +104,18 @@ export default function Jobs() {
           }
           .animate-fadeInOut {
             animation: fadeInOut ease-in-out forwards;
+          }
+
+          /* Animación de rebote (pop) */
+          @keyframes pop {
+            0% { transform: scale(1); }
+            20% { transform: scale(1.15); }
+            50% { transform: scale(1.05); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+          }
+          .animate-pop {
+            animation: pop ease-in-out forwards;
           }
         `}
       </style>
