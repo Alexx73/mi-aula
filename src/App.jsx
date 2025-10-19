@@ -5,6 +5,7 @@ import Inicio from './pages/Inicio';
 import Alphabet from './pages/Alphabet';
 import Personal from './pages/PersonalInformation';
 import Jobs from './pages/Jobs';
+import PersonalQuestions from './pages/PersonalQuestions';
 
 
 import NavBar from './components/NavBar';
@@ -18,7 +19,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/alphabet" element={<Alphabet />} />
-          <Route path="/questions" element={<Personal />} />
+          <Route path="/questions" element={<PersonalQuestions />} />
           <Route path="/jobs" element={<Jobs />} />
         </Routes>
        </div>
