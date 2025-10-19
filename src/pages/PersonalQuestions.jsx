@@ -37,7 +37,7 @@ export default function PersonalQuestions() {
           const duracionRespuesta = getDuracionTotal(item.answer);
 
           return (
-            <div key={item.number} className="flex flex-col gap-1">
+            <div key={item.number} className="flex flex-col gap-2 mb-6">
               {/* PREGUNTA (izquierda) */}
               <div className="flex items-start gap-2">
                 <img src={boy} alt="Boy" className="w-12 h-12 rounded-full self-end" />
