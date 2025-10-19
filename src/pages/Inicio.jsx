@@ -14,21 +14,21 @@ export default function Inicio() {
 
       {/* Imagen + GIF */}
       <div className="mb-8 flex flex-col items-center gap-6 md:flex-row">
-        <img
+        {/* <img
           src="https://cdn-icons-png.flaticon.com/512/1048/1048945.png"
           alt="English Learning"
           className="h-32 w-32 drop-shadow-lg"
-        />
+        /> */}
         <img
           src="https://media.giphy.com/media/ASd0Ukj0y3qMM/giphy.gif"
           alt="Funny Hello"
-          className="h-40 w-40 rounded-xl shadow-lg"
+          className="h-120 w-120 rounded-xl shadow-lg"
         />
-        <img
+        {/* <img
           src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png"
           alt="Students"
           className="h-32 w-32 drop-shadow-lg"
-        />
+        /> */}
       </div>
 
       {/* Google Translate embed */}

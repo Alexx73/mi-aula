@@ -19,8 +19,8 @@ export default function NavBar() {
             className="h-8"
             alt="Logo"
           />
-          <span className="text-lg md:text-xl font-semibold text-gray-800">
-            Mi Aula
+          <span className="text-lg md:text-xl font-semibold text-white">
+            Mi Aula de Inglés
           </span>
         </Navbar.Brand>
 
@@ -38,12 +38,12 @@ export default function NavBar() {
           <Navbar.Link as={Link} to="/questions" active={isActive("/questions")}>
             Personal Info
           </Navbar.Link>
-          <Navbar.Link as={Link} to="/contacto" active={isActive("/#")}>
+          <Navbar.Link as={Link} to="/jobs" active={isActive("/#/jobs")}>
             Jobs
           </Navbar.Link>
-           <Navbar.Link as={Link} to="/contacto" active={isActive("/#")}>
+           {/* <Navbar.Link as={Link} to="/nada" active={isActive("/#")}>
             Family
-          </Navbar.Link>
+          </Navbar.Link> */}
 
           {/* BOTONES Y DROPDOWN EN MOBILE */}
           {/* <div className="mt-3 md:hidden flex flex-col gap-2">
