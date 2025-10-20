@@ -6,6 +6,7 @@ import Alphabet from './pages/Alphabet';
 import Personal from './pages/PersonalInformation';
 import Jobs from './pages/Jobs';
 import PersonalQuestions from './pages/PersonalQuestions';
+import Family from './pages/Family';
 
 
 import NavBar from './components/NavBar';
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Inicio />} />
           <Route path="/alphabet" element={<Alphabet />} />
           <Route path="/questions" element={<PersonalQuestions />} />
+          <Route path="/family" element={<Family />} />
           <Route path="/jobs" element={<Jobs />} />
         </Routes>
        </div>

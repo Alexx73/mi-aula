@@ -75,6 +75,15 @@ export default function NavBar() {
           >
             Jobs
           </Navbar.Link>
+
+          <Navbar.Link
+            as={Link}
+            to="/family"
+            active={isActive("/family")}
+            onClick={handleLinkClick}
+          >
+           Family
+          </Navbar.Link>
         </Navbar.Collapse>
       </div>
     </Navbar>
