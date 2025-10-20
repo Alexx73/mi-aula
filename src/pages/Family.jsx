@@ -4,9 +4,9 @@ import useSpeech from "../hooks/useSpeech.js";
 export default function Family() {
   const { playSound } = useSpeech();
   const [active, setActive] = useState(null);
-  const duracion = 2800;
+  const duracion = 2600;
 
-  // Cargar imágenes automáticamente desde /assets/family
+  // Carga automática de las imágenes desde /src/assets/family
   const images = import.meta.glob("../assets/family/*.png", { eager: true });
   const imgs = {};
   Object.keys(images).forEach((p) => {
@@ -14,129 +14,180 @@ export default function Family() {
     imgs[filename] = images[p].default;
   });
 
-  const fileKeys = [
-    "1_grandfather",
-    "2_grandmother",
-    "3_mother",
-    "4_father",
-    "5_aunt",
-    "6_uncle",
-    "7_sister",
-    "8_you",
-    "9_brother",
-    "10_cousin",
-    "11_cousin2",
-  ];
-
-  const labels = {
-    1: "grandfather",
-    2: "grandmother",
-    3: "mother",
-    4: "father",
-    5: "aunt",
-    6: "uncle",
-    7: "sister",
-    8: "you",
-    9: "brother",
-    10: "cousin",
-    11: "cousin",
+  // Mapeo de archivos (asegurate que los nombres coincidan con los PNG)
+  const keys = {
+    grandfather: "1_grandfather",
+    grandmother: "2_grandmother",
+    mother: "3_mother",
+    father: "4_father",
+    aunt: "5_aunt",
+    uncle: "6_uncle",
+    sister: "7_sister",
+    you: "8_you",
+    brother: "9_brother",
+    cousin1: "10_cousin",
+    cousin2: "11_cousin2",
   };
 
-  const handleClick = (idx) => {
-    const key = fileKeys[idx - 1];
-    const word = labels[idx];
-    if (key && key.includes("you")) return;
+  const labels = {
+    grandfather: "grandfather",
+    grandmother: "grandmother",
+    mother: "mother",
+    father: "father",
+    aunt: "aunt",
+    uncle: "uncle",
+    sister: "sister",
+    you: "you",
+    brother: "brother",
+    cousin1: "cousin",
+    cousin2: "cousin",
+  };
+
+  const play = (keyName) => {
+    const fileKey = keys[keyName];
+    if (!fileKey) return;
+    if (fileKey.includes("you")) return; // you no hace nada
+    const word = labels[keyName];
     playSound(word);
-    setActive({ id: idx, word });
+    setActive(keyName);
     setTimeout(() => setActive(null), duracion);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-100 dark:bg-gray-800 overflow-hidden">
-      <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100 mt-3 mb-4 text-center">
+    <div className="min-h-screen flex flex-col items-center justify-start bg-gray-300 dark:bg-gray-800 p-3">
+      <h4 className="text-xl sm:text-2xl font-bold text-gray-800 dark:text-gray-100 mb-3">
         👪 My Family
-      </h2>
+      </h4>
 
-      {/* CONTENEDOR PRINCIPAL */}
-      <div className="relative w-full max-w-[950px] flex flex-col items-center justify-evenly bg-white-800 rounded-lg shadow-md border border-gray-200 py-6 h-[90vh]">
+      {/* contenedor principal: 2 columnas x 3 filas */}
+      <div className="relative w-full max-w-[980px] bg-white rounded-lg shadow-md border border-gray-200 overflow-hidden"
+           style={{ height: "88vh" }}>
+        {/* línea divisoria vertical central (opcional) */}
+        <div className="absolute top-4 bottom-4 left-1/2 w-px bg-gray-400 pointer-events-none transform -translate-x-1/2" />
 
-        {/* FILA 1 - Abuelos */}
-        <div className="flex justify-center items-center gap-20 sm:gap-28">
-          {/* ↑💬 para más espacio entre grandfather y grandmother, aumentá gap-20 → gap-24 o gap-32 */}
-          {[1, 2].map((idx) => (
+        <div className="grid grid-cols-2 grid-rows-3 h-full gap-y-2 sm:gap-y-4">
+
+          {/* ROW 1 */}
+          <div className="flex items-center justify-center"> 
             <FamilyMember
-              key={idx}
-              idx={idx}
-              img={imgs[fileKeys[idx - 1]]}
-              label={labels[idx]}
-              isActive={active?.id === idx}
+              img={imgs[keys.grandfather]}
+              label={labels.grandfather}
+              onClick={() => play("grandfather")}
+              isActive={active === "grandfather"}
               duracion={duracion}
-              onClick={() => handleClick(idx)}
-              activeWord={active?.word}
+              size="large"
             />
-          ))}
-        </div>
-
-        {/* FILA 2 - Padres y Tíos */}
-        <div className="flex justify-center items-center gap-16 sm:gap-24">
-          {/* ↑💬 para más espacio entre mother/father y aunt/uncle, aumentá gap-16 → gap-20 o gap-28 */}
-          {[3, 4, 5, 6].map((idx) => (
-            <FamilyMember
-              key={idx}
-              idx={idx}
-              img={imgs[fileKeys[idx - 1]]}
-              label={labels[idx]}
-              isActive={active?.id === idx}
-              duracion={duracion}
-              onClick={() => handleClick(idx)}
-              activeWord={active?.word}
-            />
-          ))}
-        </div>
-
-        {/* FILA 3 - Hermanos + Tú + Primos */}
-        <div className="flex justify-center items-center gap-5 pl-5">
-          {/* GRUPO 1 - Hermanos */}
-          <div className="flex items-center gap-6">
-            {[7, 8, 9].map((idx) => (
-              <FamilyMember
-                key={idx}
-                idx={idx}
-                img={imgs[fileKeys[idx - 1]]}
-                label={labels[idx]}
-                isActive={active?.id === idx}
-                duracion={duracion}
-                onClick={() => handleClick(idx)}
-                activeWord={active?.word}
-              />
-            ))}
           </div>
 
-          {/* ESPACIO ENTRE FAMILIAS */}
-          <div className="w-[90px] sm:w-[120px]" />
-          {/* ↑💬 este div controla el espacio entre hermanos y primos; aumentá el ancho si querés más separación */}
+          <div className="flex items-center justify-center">
+            <FamilyMember
+              img={imgs[keys.grandmother]}
+              label={labels.grandmother}
+              onClick={() => play("grandmother")}
+              isActive={active === "grandmother"}
+              duracion={duracion}
+              size="large"
+            />
+          </div>
 
-          {/* GRUPO 2 - Primos */}
-          <div className="flex items-center gap-6 -translate-x-[30px] sm:-translate-x-[80px]">
-            {/* ↑💬 para mover los primos más a la izquierda, aumentá el valor negativo de translate-x
-                por ejemplo: -translate-x-[25px] o -translate-x-[40px] */}
-            {[10, 11].map((idx) => (
+          {/* ROW 2 - pareja de la izquierda (mother,father) | pareja derecha (aunt,uncle) */}
+          <div className="flex items-center justify-center">
+            <div className="flex gap-6 sm:gap-8 items-center">
               <FamilyMember
-                key={idx}
-                idx={idx}
-                img={imgs[fileKeys[idx - 1]]}
-                label={labels[idx]}
-                isActive={active?.id === idx}
+                img={imgs[keys.mother]}
+                label={labels.mother}
+                onClick={() => play("mother")}
+                isActive={active === "mother"}
                 duracion={duracion}
-                onClick={() => handleClick(idx)}
-                activeWord={active?.word}
+                size="medium"
               />
-            ))}
+              <FamilyMember
+                img={imgs[keys.father]}
+                label={labels.father}
+                onClick={() => play("father")}
+                isActive={active === "father"}
+                duracion={duracion}
+                size="medium"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <div className="flex gap-6 sm:gap-8 items-center">
+              <FamilyMember
+                img={imgs[keys.aunt]}
+                label={labels.aunt}
+                onClick={() => play("aunt")}
+                isActive={active === "aunt"}
+                duracion={duracion}
+                size="medium"
+              />
+              <FamilyMember
+                img={imgs[keys.uncle]}
+                label={labels.uncle}
+                onClick={() => play("uncle")}
+                isActive={active === "uncle"}
+                duracion={duracion}
+                size="medium"
+              />
+            </div>
+          </div>
+
+          {/* ROW 3 - left: sister,you,brother  | right: cousins */}
+          <div className="flex items-center justify-center">
+            <div className="flex gap-6 sm:gap-8 items-center">
+              <FamilyMember
+                img={imgs[keys.sister]}
+                label={labels.sister}
+                onClick={() => play("sister")}
+                isActive={active === "sister"}
+                duracion={duracion}
+                size="small"
+              />
+              <FamilyMember
+                img={imgs[keys.you]}
+                label={labels.you}
+                onClick={() => play("you")}
+                isActive={false} // you no activa
+                duracion={duracion}
+                size="small"
+                disabled
+              />
+              <FamilyMember
+                img={imgs[keys.brother]}
+                label={labels.brother}
+                onClick={() => play("brother")}
+                isActive={active === "brother"}
+                duracion={duracion}
+                size="small"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center">
+            <div className="flex gap-6 sm:gap-8 items-center">
+              <FamilyMember
+                img={imgs[keys.cousin1]}
+                label={labels.cousin1}
+                onClick={() => play("cousin1")}
+                isActive={active === "cousin1"}
+                duracion={duracion}
+                size="small"
+              />
+              <FamilyMember
+                img={imgs[keys.cousin2]}
+                label={labels.cousin2}
+                onClick={() => play("cousin2")}
+                isActive={active === "cousin2"}
+                duracion={duracion}
+                size="small"
+              />
+            </div>
           </div>
         </div>
       </div>
 
-      {/* ESTILOS DE ANIMACIÓN */}
+      {/* estilos de animaciones */}
       <style>
         {`
           @keyframes fadeInOut {
@@ -145,9 +196,7 @@ export default function Family() {
             80% { opacity: 1; transform: translateY(0); }
             100% { opacity: 0; transform: translateY(-6px); }
           }
-          .animate-fadeInOut {
-            animation: fadeInOut ease-in-out forwards;
-          }
+          .animate-fadeInOut { animation: fadeInOut ease-in-out forwards; }
 
           @keyframes pop {
             0% { transform: scale(1); }
@@ -156,69 +205,55 @@ export default function Family() {
             80% { transform: scale(1.12); }
             100% { transform: scale(1); }
           }
-          .animate-pop {
-            animation: pop ease-in-out forwards;
-          }
+          .animate-pop { animation: pop ease-in-out forwards; }
         `}
       </style>
     </div>
   );
 }
 
-/* COMPONENTE REUTILIZABLE */
+/* ----------------- FamilyMember ----------------- */
 function FamilyMember({
-  idx,
   img,
   label,
+  onClick,
   isActive,
   duracion,
-  onClick,
-  activeWord,
+  size = "medium",
+  disabled = false,
 }) {
-  // 📏 Tamaño actual de las fotos
+  // tamaños por "tipo" (ajustalos si querés)
   const sizeClass =
-    "w-[100px] sm:w-[120px] md:w-[130px] lg:w-[140px] h-auto";
-  // 💬 Para agrandar las fotos un 10%, aumentá todos los valores en 10%
-  // Ejemplo: w-[110px] sm:w-[132px] md:w-[143px] lg:w-[154px]
+    size === "large"
+      ? "w-[140px] sm:w-[160px] md:w-[170px] lg:w-[180px]"
+      : size === "medium"
+      ? "w-[110px] sm:w-[125px] md:w-[135px] lg:w-[145px]"
+      : "w-[90px] sm:w-[100px] md:w-[110px] lg:w-[120px]";
+
+  // Comentario: para agrandar TODAS las fotos un 10% -> multiplicá cada valor por 1.1
+  // (ej. w-[154px] sm:w-[176px] ...)
 
   return (
-    <div className="relative flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <button
-        onClick={onClick}
-        disabled={label === "you"}
-        className={`relative flex items-center justify-center bg-transparent border-0 ${
-          label === "you" ? "cursor-default" : "cursor-pointer"
-        }`}
+        onClick={disabled ? undefined : onClick}
+        disabled={disabled}
+        className={`relative bg-transparent border-0 ${disabled ? "cursor-default" : "cursor-pointer"}`}
       >
         <img
           src={img}
           alt={label}
-          className={`${sizeClass} rounded-full border-4 border-white shadow-lg transition-transform ${
-            isActive ? "animate-pop" : "hover:scale-[1.05]"
-          }`}
+          className={`${sizeClass} rounded-full border-4 border-white shadow-lg transition-transform ${isActive ? "animate-pop" : "hover:scale-[1.03]"}`}
         />
         {isActive && (
           <div
-            className="
-              absolute 
-              -top-12 
-              left-1/2 
-              -translate-x-1/2 
-              bg-black/80 
-              text-white 
-              text-md sm:text-base md:text-lg 
-              font-semibold 
-              px-3 py-1 
-              rounded-md 
-              animate-fadeInOut
-            "
+            className="absolute -top-7 left-1/2 -translate-x-1/2 bg-black/80 text-white text-sm sm:text-base font-semibold px-2 py-2 rounded-md animate-fadeInOut"
             style={{ animationDuration: `${duracion}ms` }}
           >
-            {activeWord}
+            {label}
           </div>
         )}
       </button>
     </div>
   );
 }
-
