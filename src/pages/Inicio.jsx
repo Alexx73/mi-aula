@@ -1,6 +1,7 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import QuarterTabs from '../components/QuarterTabs';
 import ActivityCard from '../components/ActivityCard';
+import PdfBookViewer from '../components/PdfBookViewer';
 
 import cuadernilloPdf from '../assets/cuadernillo - 1ro - 2026.pdf';
 
@@ -78,9 +79,6 @@ const quarterData = [
 
 export default function Inicio() {
   const [activeQuarter, setActiveQuarter] = useState('q1');
-  const [pdfZoom, setPdfZoom] = useState(1);
-  const [pdfControlsVisible, setPdfControlsVisible] = useState(true);
-  const pdfControlsTimer = useRef(null);
 
   const activeData = useMemo(
     () => quarterData.find((quarter) => quarter.id === activeQuarter) ?? quarterData[0],
@@ -88,28 +86,6 @@ export default function Inicio() {
   );
 
   const isCuadernillo = activeQuarter === 'cuadernillo';
-
-  const showPdfControls = () => {
-    setPdfControlsVisible(true);
-    if (pdfControlsTimer.current) clearTimeout(pdfControlsTimer.current);
-    pdfControlsTimer.current = setTimeout(() => {
-      setPdfControlsVisible(false);
-    }, 5000);
-  };
-
-  useEffect(() => {
-    if (isCuadernillo) {
-      setPdfZoom(1);
-      showPdfControls();
-    } else {
-      setPdfControlsVisible(true);
-      if (pdfControlsTimer.current) clearTimeout(pdfControlsTimer.current);
-    }
-
-    return () => {
-      if (pdfControlsTimer.current) clearTimeout(pdfControlsTimer.current);
-    };
-  }, [isCuadernillo]);
 
   return (
     <div className="flex h-[calc(100dvh-5rem)] flex-col overflow-hidden bg-gradient-to-b from-blue-100 to-blue-200 px-3 py-2 dark:from-gray-900 dark:to-gray-800">
@@ -136,11 +112,7 @@ export default function Inicio() {
             {activeData.label}
           </h2>
           {isCuadernillo ? (
-            <a
-              href={cuadernilloPdf}
-              download="cuadernillo - 1ro - 2026.pdf"
-              className="mt-1 inline-flex items-center gap-2 text-[10px] font-medium text-gray-700 transition hover:text-blue-700 dark:text-gray-300 dark:hover:text-blue-300"
-            >
+            <div className="mt-1 inline-flex items-center gap-2 text-[10px] font-medium text-gray-700 dark:text-gray-300">
               <span>{activeData.subtitle}</span>
               <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm">
                 <svg viewBox="0 0 24 24" className="h-3.5 w-3.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -149,7 +121,7 @@ export default function Inicio() {
                   <line x1="12" y1="15" x2="12" y2="3" />
                 </svg>
               </span>
-            </a>
+            </div>
           ) : (
             <p className="text-[10px] font-medium text-gray-700 dark:text-gray-300">
               {activeData.subtitle}
@@ -163,70 +135,7 @@ export default function Inicio() {
 
       {isCuadernillo ? (
         <div className="relative flex flex-1 min-h-0 flex-col overflow-hidden">
-          <div className="relative flex-1 min-h-0 overflow-hidden rounded-2xl border border-white/70 bg-white/85 shadow-md dark:border-white/10 dark:bg-gray-900/80">
-            <div
-              className="h-full w-full origin-top overflow-hidden"
-              style={{
-                transform: `scale(${pdfZoom})`,
-                width: `${100 / pdfZoom}%`,
-                height: `${100 / pdfZoom}%`,
-              }}
-            >
-              <iframe
-                src={cuadernilloPdf}
-                title="Cuadernillo"
-                className="h-full w-full"
-                loading="eager"
-                allow="fullscreen"
-              />
-            </div>
-
-            {!pdfControlsVisible && (
-              <button
-                type="button"
-                onClick={showPdfControls}
-                className="absolute inset-0 z-20 bg-transparent"
-                aria-label="Mostrar controles del cuadernillo"
-              />
-            )}
-
-            <div
-              className={`absolute bottom-2 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/55 px-2 py-1 text-white shadow-lg backdrop-blur transition-opacity duration-200 ${
-                pdfControlsVisible ? 'opacity-100' : 'pointer-events-none opacity-0'
-              }`}
-            >
-              <button
-                type="button"
-                onClick={() => {
-                  setPdfZoom((prev) => Math.max(0.75, +(prev - 0.15).toFixed(2)));
-                  showPdfControls();
-                }}
-                className="h-8 rounded-full bg-white/15 px-3 text-sm font-black leading-none"
-              >
-                -
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setPdfZoom(1);
-                  showPdfControls();
-                }}
-                className="h-8 rounded-full bg-white/15 px-3 text-[10px] font-black leading-none"
-              >
-                100%
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setPdfZoom((prev) => Math.min(2, +(prev + 0.15).toFixed(2)));
-                  showPdfControls();
-                }}
-                className="h-8 rounded-full bg-white/15 px-3 text-sm font-black leading-none"
-              >
-                +
-              </button>
-            </div>
-          </div>
+          <PdfBookViewer src={cuadernilloPdf} fileName="cuadernillo - 1ro - 2026.pdf" />
         </div>
       ) : (
         <div className="grid grid-cols-2 content-start items-start gap-2 overflow-hidden sm:grid-cols-2 md:grid-cols-3">
