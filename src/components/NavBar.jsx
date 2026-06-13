@@ -1,10 +1,11 @@
-import { Navbar, Button, Dropdown, Avatar } from "flowbite-react";
+import { Navbar } from "flowbite-react";
 import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 
 export default function NavBar() {
   const location = useLocation();
   const isActive = (path) => location.pathname === path;
+  const isHome = location.pathname === "/";
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Cerrar el menú al cambiar de ruta
@@ -29,15 +30,26 @@ export default function NavBar() {
     >
       <div className="flex flex-wrap justify-between items-center w-full px-4 md:px-8">
         {/* LOGO */}
-        <Navbar.Brand as={Link} to="/" onClick={handleLinkClick}>
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="h-8"
-            alt="Logo"
-          />
-          <span className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white ml-2">
-            Aula de Inglés de primer año
-          </span>
+        <Navbar.Brand as={Link} to="/" onClick={handleLinkClick} className="flex flex-col items-start gap-1">
+          <div className="flex items-center">
+            <img
+              src="https://flowbite.com/docs/images/logo.svg"
+              className="h-8"
+              alt="Logo"
+            />
+            <span className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white ml-2">
+              Aula de Inglés de primer año
+            </span>
+          </div>
+          {!isHome && (
+            <Link
+              to="/"
+              onClick={handleLinkClick}
+              className="ml-10 inline-flex items-center gap-1 rounded-full bg-gradient-to-r from-fuchsia-600 to-orange-500 px-3 py-1 text-sm font-bold text-white shadow-lg shadow-fuchsia-500/30 transition hover:brightness-110"
+            >
+              ← Volver
+            </Link>
+          )}
         </Navbar.Brand>
 
         {/* BOTÓN DE MENÚ RESPONSIVE */}

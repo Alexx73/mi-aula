@@ -17,11 +17,12 @@ function App() {
   return (
     <HashRouter>
       <NavBar/>
-      <div className="pt-20 px-4 dark:bg-gray-800 min-h-screen dark:text-white">
+      <div className="pt-24 px-4 dark:bg-gray-800 min-h-screen dark:text-white">
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/alphabet" element={<Alphabet />} />         
-           <Route path="/number" element={<Numbers />} />
+          <Route path="/number" element={<Numbers />} />
+          <Route path="/personal-information" element={<Personal />} />
           <Route path="/questions" element={<PersonalQuestions />} />
           <Route path="/family" element={<Family />} />
           <Route path="/jobs" element={<Jobs />} />
