@@ -2,10 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import QuarterTabs from '../components/QuarterTabs';
 import ActivityCard from '../components/ActivityCard';
 
-const pdfPreviewUrl =
-  'https://drive.google.com/file/d/1JDWsxlSciDbAYW0F_kVbuGh0IORQ--kj/preview';
-const pdfDownloadUrl =
-  'https://drive.google.com/uc?export=download&id=1JDWsxlSciDbAYW0F_kVbuGh0IORQ--kj';
+import cuadernilloPdf from '../assets/cuadernillo - 1ro - 2026.pdf';
 
 const quarterData = [
   {
@@ -140,7 +137,8 @@ export default function Inicio() {
           </h2>
           {isCuadernillo ? (
             <a
-              href={pdfDownloadUrl}
+              href={cuadernilloPdf}
+              download="cuadernillo - 1ro - 2026.pdf"
               className="mt-1 inline-flex items-center gap-2 text-[10px] font-medium text-gray-700 transition hover:text-blue-700 dark:text-gray-300 dark:hover:text-blue-300"
             >
               <span>{activeData.subtitle}</span>
@@ -175,9 +173,11 @@ export default function Inicio() {
               }}
             >
               <iframe
-                src={pdfPreviewUrl}
+                src={cuadernilloPdf}
                 title="Cuadernillo"
                 className="h-full w-full"
+                loading="eager"
+                allow="fullscreen"
               />
             </div>
 
