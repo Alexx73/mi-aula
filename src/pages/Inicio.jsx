@@ -89,14 +89,6 @@ export default function Inicio() {
 
   return (
     <div className="flex h-[calc(100dvh-5rem)] flex-col overflow-hidden bg-gradient-to-b from-blue-100 to-blue-200 px-3 py-2 dark:from-gray-900 dark:to-gray-800">
-      <div className="mb-1">
-        <h1 className="text-center text-xl font-extrabold leading-tight text-blue-800 md:text-4xl dark:text-blue-300">
-          Aula de Ingles de primer ano
-        </h1>
-        <p className="mx-auto mt-1 max-w-2xl text-center text-[11px] leading-snug text-gray-700 dark:text-gray-300">
-          Elige un trimestre para entrar rapido a cada actividad.
-        </p>
-      </div>
 
       <div className="mb-1">
         <QuarterTabs

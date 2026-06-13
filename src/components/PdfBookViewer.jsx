@@ -31,7 +31,13 @@ export default function PdfBookViewer({ src, fileName }) {
     const loadPdf = async () => {
       setLoading(true);
       try {
-        const doc = await pdfjsLib.getDocument(src).promise;
+        const response = await fetch(src);
+        if (!response.ok) {
+          throw new Error(`No se pudo cargar el PDF: ${response.status}`);
+        }
+
+        const buffer = await response.arrayBuffer();
+        const doc = await pdfjsLib.getDocument({ data: new Uint8Array(buffer) }).promise;
         if (cancelled) return;
         pdfDocRef.current = doc;
         setPageCount(doc.numPages);
