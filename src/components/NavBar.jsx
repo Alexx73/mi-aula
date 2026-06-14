@@ -26,7 +26,8 @@ export default function NavBar() {
   return (
     <Navbar
       fluid
-      className="w-full bg-white border-b border-gray-200 shadow-sm fixed top-0 left-0 z-50"
+      className="w-full bg-white border-b border-gray-200 shadow-sm fixed left-0 z-50"
+      style={{ top: 'calc(-1 * var(--nav-vertical-shift, 0px))' }}
     >
       <div className="flex flex-wrap justify-between items-center w-full px-4 md:px-8">
         {/* LOGO */}
@@ -34,11 +35,11 @@ export default function NavBar() {
           <div className="flex items-center">
             <img
               src="https://flowbite.com/docs/images/logo.svg"
-              className="h-8"
+              className="h-4"
               alt="Logo"
             />
-            <span className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white ml-2">
-              Aula de Inglés de primer año
+            <span className="text-md md:text-md font-semibold text-gray-900 dark:text-white ml-2">
+              Aula de Inglés de 1er año
             </span>
           </div>
           {!isHome && (
@@ -53,10 +54,10 @@ export default function NavBar() {
         </Navbar.Brand>
 
         {/* BOTÓN DE MENÚ RESPONSIVE */}
-        <Navbar.Toggle onClick={handleToggle} className="focus:ring-0 focus:outline-none" />
+        {/* <Navbar.Toggle onClick={handleToggle} className="focus:ring-0 focus:outline-none" /> */}
 
         {/* MENÚ DE NAVEGACIÓN */}
-        <Navbar.Collapse className={isMenuOpen ? "block" : "hidden md:block"}>
+        {/* <Navbar.Collapse className={isMenuOpen ? "block" : "hidden md:block"}>
           <Navbar.Link as={Link} to="/" active={isActive("/")} onClick={handleLinkClick}>
             Inicio
           </Navbar.Link>
@@ -79,33 +80,8 @@ export default function NavBar() {
             Numbers
           </Navbar.Link>
 
-          {/* <Navbar.Link
-            as={Link}
-            to="/questions"
-            active={isActive("/questions")}
-            onClick={handleLinkClick}
-          >
-            Personal Info
-          </Navbar.Link> */}
-
-          {/* <Navbar.Link
-            as={Link}
-            to="/jobs"
-            active={isActive("/jobs")}
-            onClick={handleLinkClick}
-          >
-            Jobs
-          </Navbar.Link> */}
-
-          {/* <Navbar.Link
-            as={Link}
-            to="/family"
-            active={isActive("/family")}
-            onClick={handleLinkClick}
-          >
-           Family
-          </Navbar.Link> */}
-        </Navbar.Collapse>
+        
+        </Navbar.Collapse> */}
       </div>
     </Navbar>
   );

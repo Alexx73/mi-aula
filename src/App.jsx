@@ -11,13 +11,20 @@ import Numbers from './pages/Numbers';
 
 
 import NavBar from './components/NavBar';
-import NavBar2 from './components/NavBar2';
+
+const NAV_VERTICAL_SHIFT_PX = 36;
 
 function App() {
   return (
     <HashRouter>
       <NavBar/>
-      <div className="pt-24 px-4 dark:bg-gray-800 min-h-screen dark:text-white">
+      <div
+        className="px-4 dark:bg-gray-800 min-h-screen dark:text-white"
+        style={{
+          paddingTop: `calc(6rem - ${NAV_VERTICAL_SHIFT_PX}px)`,
+          '--nav-vertical-shift': `${NAV_VERTICAL_SHIFT_PX}px`,
+        }}
+      >
         <Routes>
           <Route path="/" element={<Inicio />} />
           <Route path="/alphabet" element={<Alphabet />} />         

@@ -88,7 +88,7 @@ export default function Inicio() {
   const isCuadernillo = activeQuarter === 'cuadernillo';
 
   return (
-    <div className="flex h-[calc(100dvh-5rem)] flex-col overflow-hidden bg-gradient-to-b from-blue-100 to-blue-200 px-3 py-2 dark:from-gray-900 dark:to-gray-800">
+    <div className="flex h-[calc(100dvh-5rem)] flex-col overflow-hidden bg-gradient-to-b from-blue-100 to-blue-200 px-3  dark:from-gray-900 dark:to-gray-800">
 
       <div className="mb-1">
         <QuarterTabs
@@ -100,9 +100,9 @@ export default function Inicio() {
 
       <div className="mb-1 flex items-end justify-between gap-3">
         <div>
-          <h2 className="text-sm font-black text-gray-900 dark:text-white">
+          {/* <h2 className="text-sm font-black text-gray-900 dark:text-white">
             {activeData.label}
-          </h2>
+          </h2> */}
           {isCuadernillo ? (
             <div className="mt-1 inline-flex items-center gap-2 text-[10px] font-medium text-gray-700 dark:text-gray-300">
               <span>{activeData.subtitle}</span>
