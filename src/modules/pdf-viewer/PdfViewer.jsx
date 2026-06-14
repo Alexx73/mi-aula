@@ -19,6 +19,10 @@ export default function PdfViewer({
   const canvasRefs = useRef([]);
   const pdfDocRef = useRef(null);
   const renderTokenRef = useRef(0);
+  const pinchStateRef = useRef({
+    startDistance: 0,
+    startZoom: 1,
+  });
 
   const [pageCount, setPageCount] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
@@ -99,6 +103,62 @@ export default function PdfViewer({
   }, []);
 
   useEffect(() => {
+    const el = wrapperRef.current;
+    if (!el) return undefined;
+
+    const getDistance = (touches) => {
+      const [first, second] = touches;
+      const dx = second.clientX - first.clientX;
+      const dy = second.clientY - first.clientY;
+      return Math.hypot(dx, dy);
+    };
+
+    const handleTouchStart = (event) => {
+      if (event.touches.length !== 2) return;
+
+      pinchStateRef.current = {
+        startDistance: getDistance(event.touches),
+        startZoom: zoom,
+      };
+    };
+
+    const handleTouchMove = (event) => {
+      if (event.touches.length !== 2) return;
+
+      event.preventDefault();
+      const currentDistance = getDistance(event.touches);
+      const { startDistance, startZoom } = pinchStateRef.current;
+
+      if (!startDistance) return;
+
+      const scaleFactor = currentDistance / startDistance;
+      const nextZoom = Math.min(2, Math.max(0.75, +(startZoom * scaleFactor).toFixed(2)));
+      setZoom(nextZoom);
+    };
+
+    const handleTouchEnd = (event) => {
+      if (event.touches.length < 2) {
+        pinchStateRef.current = {
+          startDistance: 0,
+          startZoom: zoom,
+        };
+      }
+    };
+
+    el.addEventListener('touchstart', handleTouchStart, { passive: true });
+    el.addEventListener('touchmove', handleTouchMove, { passive: false });
+    el.addEventListener('touchend', handleTouchEnd, { passive: true });
+    el.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+
+    return () => {
+      el.removeEventListener('touchstart', handleTouchStart);
+      el.removeEventListener('touchmove', handleTouchMove);
+      el.removeEventListener('touchend', handleTouchEnd);
+      el.removeEventListener('touchcancel', handleTouchEnd);
+    };
+  }, [zoom]);
+
+  useEffect(() => {
     const renderPages = async () => {
       const pdfDoc = pdfDocRef.current;
       if (!pdfDoc || !pageCount || !containerWidth) return;
@@ -154,14 +214,14 @@ export default function PdfViewer({
             {error}
           </div>
         ) : (
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 touch-pan-y">
             {Array.from({ length: pageCount }).map((_, index) => (
               <canvas
                 key={`page-${index + 1}`}
                 ref={(el) => {
                   canvasRefs.current[index] = el;
                 }}
-                className={`mx-auto block rounded-lg bg-white shadow-sm ${canvasClassName}`}
+                className={`mx-auto block rounded-lg bg-white shadow-sm touch-pan-y ${canvasClassName}`}
               />
             ))}
           </div>
@@ -169,7 +229,7 @@ export default function PdfViewer({
       </div>
 
       <div
-        className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/70 px-2 py-1 text-white shadow-xl shadow-black/30 backdrop-blur"
+        className="fixed bottom-4 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/70 px-2 py-1 text-white shadow-xl shadow-black/30 backdrop-blur touch-none"
       >
         <button
           type="button"
