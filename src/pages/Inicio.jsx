@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import QuarterTabs from '../components/QuarterTabs';
 import ActivityCard from '../components/ActivityCard';
-import PdfBookViewer from '../components/PdfBookViewer';
+import PdfViewer from '../modules/pdf-viewer';
 
 import cuadernilloPdf from '../assets/cuadernillo - 1ro - 2026.pdf';
 
@@ -127,7 +127,10 @@ export default function Inicio() {
 
       {isCuadernillo ? (
         <div className="relative flex flex-1 min-h-0 flex-col overflow-hidden">
-          <PdfBookViewer src={cuadernilloPdf} fileName="cuadernillo - 1ro - 2026.pdf" />
+          <PdfViewer
+            src={cuadernilloPdf}
+            loadingLabel="Cargando cuadernillo..."
+          />
         </div>
       ) : (
         <div className="grid grid-cols-2 content-start items-start gap-2 overflow-hidden sm:grid-cols-2 md:grid-cols-3">
