@@ -25,6 +25,13 @@ const quarterData = [
         badge: 'Numbers',
         accentClass: 'bg-blue-600',
       },
+      {
+        to: '/number-wheel',
+        title: 'Number Spinner',
+        subtitle: 'Girar y practicar numeros del 1 al 100.',
+        badge: 'Game',
+        accentClass: 'bg-amber-500',
+      },
     ],
   },
   {
